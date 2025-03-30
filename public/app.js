@@ -1,51 +1,51 @@
 document.getElementById('cuestionarioForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+  event.preventDefault();
 
-    // Captura las respuestas del formulario
-    const respuestas = {
-        preguntas: {},
-        servicioClientes: document.getElementById('servicioClientes').value,
-        esJefe: document.getElementById('esJefe').value,
-    };
+  // Obtén el empresaId desde el campo oculto o localStorage
+  const empresaId = document.getElementById('empresaId').value || localStorage.getItem('empresaId');
 
-    // Recorre todas las preguntas y captura sus valores
-    for (let i = 1; i <= 72; i++) {
-        const pregunta = document.querySelector(`select[name="pregunta${i}"]`);
-        if (pregunta && pregunta.value) {
-            respuestas.preguntas[`pregunta${i}`] = pregunta.value;
-        }
+  if (!empresaId) {
+    alert('No se encontró el identificador de la empresa. Por favor, regístrese primero.');
+    return;
+  }
+
+  // Captura las respuestas del formulario
+  const respuestas = {
+    preguntas: {}, // Aquí se almacenarán las respuestas de las preguntas
+    servicioClientes: document.getElementById('servicioClientes').value,
+    esJefe: document.getElementById('esJefe').value,
+    empresaId: empresaId, // Incluye el ID de la empresa
+  };
+
+  // Recorre todas las preguntas y captura sus valores
+  for (let i = 1; i <= 72; i++) {
+    const pregunta = document.querySelector(`select[name="pregunta${i}"]`);
+    if (pregunta && pregunta.value) {
+      respuestas.preguntas[`pregunta${i}`] = pregunta.value;
     }
+  }
 
-    // Envía los datos al backend
-    try {
-        const response = await fetch('http://localhost:3000/api/respuestas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(respuestas), // Convierte los datos a JSON
-        });
+  // Envía los datos al backend
+  try {
+    const response = await fetch('http://localhost:3000/api/respuestas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(respuestas),
+    });
 
-        // Verifica si la respuesta es exitosa
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Respuesta guardada:', data);
-
-            // Muestra los resultados en la sección correspondiente
-            document.getElementById('resultadoPuntaje').textContent = data.puntajeTotal;
-            document.getElementById('resultadoNivelRiesgo').textContent = data.nivelRiesgo;
-            document.getElementById('resultadoAcciones').textContent = obtenerAccionesRecomendadas(data.nivelRiesgo);
-
-            // Muestra la sección de resultados
-            document.getElementById('resultados').style.display = 'block';
-        } else {
-            console.error('Error al enviar las respuestas:', response.statusText);
-            alert('Hubo un error al enviar las respuestas.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Hubo un error al enviar las respuestas.');
+    if (response.ok) {
+      const data = await response.json();
+      alert('Respuestas enviadas correctamente.');
+      console.log('Respuesta del servidor:', data);
+    } else {
+      alert('Error al enviar las respuestas.');
     }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar las respuestas.');
+  }
 });
 
 // Función para obtener las acciones recomendadas según el nivel de riesgo

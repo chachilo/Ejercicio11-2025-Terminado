@@ -17,7 +17,7 @@ form.addEventListener('submit', function(event) {
         muestraRepresentativa: muestraRepresentativa
     };
 
-    fetch('http://localhost:3000/api/empresa', {
+    fetch('http://localhost:3000/api/empresas', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -33,6 +33,12 @@ form.addEventListener('submit', function(event) {
     .then(data => {
         console.log('Success:', data);
         alert('Datos enviados con éxito');
+
+        // Almacena el identificador de la empresa en el almacenamiento local
+        localStorage.setItem('empresaId', data._id);
+
+        // Redirige al usuario al formulario con el identificador de la empresa
+        window.location.href = `formulario.html?empresaId=${data._id}`;
     })
     .catch((error) => {
         console.error('Error:', error);
