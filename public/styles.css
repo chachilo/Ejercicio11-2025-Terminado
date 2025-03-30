@@ -1,0 +1,40 @@
+/* Estilos personalizados */
+.custom-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+/* CSS para Cuestionario */
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .form-label {
+    font-weight: bold;
+  }
+
+
+
+  /* CSS para la ventana de Resultados */
+  #resultados {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  #resultados h2 {
+    margin-bottom: 15px;
+  }
+  
+  #resultados p {
+    margin: 10px 0;
+  }
