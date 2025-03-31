@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome para íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilos personalizados */
         .loading-overlay {
@@ -50,6 +49,91 @@
         .badge-riesgo {
             font-size: 1rem;
             padding: 0.5em 0.75em;
+        }
+
+        /* Estilos adicionales */
+        .progress {
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            transition: width 0.6s ease;
+        }
+
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 0.75rem;
+        }
+
+        .card-header h5, .card-header h6 {
+            font-weight: 600;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .card-summary {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card-summary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .accion-riesgo {
+            border-left: 4px solid;
+            padding-left: 15px;
+            margin-top: 20px;
+        }
+        
+        .riesgo-muy-alto {
+            border-left-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.05);
+        }
+        
+        .riesgo-alto {
+            border-left-color: #fd7e14;
+            background-color: rgba(253, 126, 20, 0.05);
+        }
+        
+        .riesgo-medio {
+            border-left-color: #ffc107;
+            background-color: rgba(255, 193, 7, 0.05);
+        }
+        
+        .riesgo-bajo {
+            border-left-color: #198754;
+            background-color: rgba(25, 135, 84, 0.05);
+        }
+        
+        .riesgo-nulo {
+            border-left-color: #6c757d;
+            background-color: rgba(108, 117, 125, 0.05);
         }
     </style>
 </head>
@@ -129,30 +213,65 @@
                             </div>
 
                             <div id="resumenEmpresa" class="row mb-4">
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body text-center">
-                                            <h3 class="h6 text-muted">Total Encuestas</h3>
-                                            <p id="totalEncuestas" class="h2 text-primary mb-0">0</p>
+                                <div class="col-md-3">
+                                    <div class="card card-summary h-100">
+                                        <div class="card-body text-center py-3">
+                                            <div class="icon-container bg-primary bg-opacity-10">
+                                                <i class="fas fa-poll text-primary fs-4"></i>
+                                            </div>
+                                            <h3 class="h6 text-muted mt-1 mb-1">Total Encuestas</h3>
+                                            <p id="totalEncuestas" class="h4 text-primary mb-0 fw-bold">0</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body text-center">
-                                            <h3 class="h6 text-muted">Puntaje Promedio</h3>
-                                            <p id="puntajePromedio" class="h2 text-primary mb-0">0</p>
+                                <div class="col-md-3">
+                                    <div class="card card-summary h-100">
+                                        <div class="card-body text-center py-3">
+                                            <div class="icon-container bg-info bg-opacity-10">
+                                                <i class="fas fa-star text-info fs-4"></i>
+                                            </div>
+                                            <h3 class="h6 text-muted mt-1 mb-1">Puntaje Promedio</h3>
+                                            <p id="puntajePromedio" class="h4 text-info mb-0 fw-bold">0</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-body text-center">
-                                            <h3 class="h6 text-muted">Nivel de Riesgo</h3>
-                                            <p id="nivelRiesgo" class="h2 mb-0">
-                                                <span class="badge bg-danger">Nulo</span>
+                                <div class="col-md-3">
+                                    <div class="card card-summary h-100">
+                                        <div class="card-body text-center py-3">
+                                            <div class="icon-container bg-warning bg-opacity-10">
+                                                <i class="fas fa-exclamation-triangle text-warning fs-4"></i>
+                                            </div>
+                                            <h3 class="h6 text-muted mt-1 mb-1">Nivel de Riesgo</h3>
+                                            <p id="nivelRiesgo" class="h4 mb-0">
+                                                <span class="badge bg-secondary">Nulo</span>
                                             </p>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card card-summary h-100">
+                                        <div class="card-body text-center py-3">
+                                            <div class="icon-container bg-success bg-opacity-10">
+                                                <i class="fas fa-calendar-alt text-success fs-4"></i>
+                                            </div>
+                                            <h3 class="h6 text-muted mt-1 mb-1">Última Actualización</h3>
+                                            <p id="fechaActualizacion" class="small mb-0">--/--/----</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sección de necesidad de acción -->
+                            <div id="accionRiesgoContainer" class="mb-4 d-none">
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-exclamation-circle me-2"></i>
+                                            Necesidad de acción según nivel de riesgo
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="accionRiesgoContent"></div>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +299,288 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="resultados.js"></script>
+    <script>
+        // Datos de necesidad de acción por nivel de riesgo
+        const accionesRiesgo = {
+            "Muy alto": {
+                clase: "riesgo-muy-alto",
+                descripcion: "Se requiere realizar el análisis de cada categoría y dominio para establecer las acciones de intervención apropiadas, mediante un Programa de intervención que deberá incluir evaluaciones específicas, y contemplar campañas de sensibilización, revisar la política de prevención de riesgos psicosociales y programas para la prevención de los factores de riesgo psicosocial, la promoción de un entorno organizacional favorable y la prevención de la violencia laboral, así como reforzar su aplicación y difusión."
+            },
+            "Alto": {
+                clase: "riesgo-alto",
+                descripcion: "Se requiere realizar un análisis de cada categoría y dominio, de manera que se puedan determinar las acciones de intervención apropiadas a través de un Programa de intervención, que podrá incluir una evaluación específica y deberá incluir una campaña de sensibilización, revisar la política de prevención de riesgos psicosociales y programas para la prevención de los factores de riesgo psicosocial, la promoción de un entorno organizacional favorable y la prevención de la violencia laboral, así como reforzar su aplicación y difusión."
+            },
+            "Medio": {
+                clase: "riesgo-medio",
+                descripcion: "Se requiere revisar la política de prevención de riesgos psicosociales y programas para la prevención de los factores de riesgo psicosocial, la promoción de un entorno organizacional favorable y la prevención de la violencia laboral, así como reforzar su aplicación y difusión, mediante un Programa de intervención."
+            },
+            "Bajo": {
+                clase: "riesgo-bajo",
+                descripcion: "Es necesario una mayor difusión de la política de prevención de riesgos psicosociales y programas para: la prevención de los factores de riesgo psicosocial, la promoción de un entorno organizacional favorable y la prevención de la violencia laboral."
+            },
+            "Nulo": {
+                clase: "riesgo-nulo",
+                descripcion: "El riesgo resulta despreciable por lo que no se requiere medidas adicionales."
+            }
+        };
+
+        // Función para mostrar la necesidad de acción según el nivel de riesgo
+        function mostrarAccionRiesgo(nivelRiesgo) {
+            const accionContainer = document.getElementById('accionRiesgoContainer');
+            const accionContent = document.getElementById('accionRiesgoContent');
+            
+            if (!nivelRiesgo || !accionesRiesgo[nivelRiesgo]) {
+                accionContainer.classList.add('d-none');
+                return;
+            }
+            
+            const accion = accionesRiesgo[nivelRiesgo];
+            
+            accionContent.innerHTML = `
+                <div class="accion-riesgo ${accion.clase} p-3 rounded">
+                    <h6 class="fw-bold mb-3">Nivel de riesgo: ${nivelRiesgo}</h6>
+                    <p class="mb-0">${accion.descripcion}</p>
+                </div>
+            `;
+            
+            accionContainer.classList.remove('d-none');
+        }
+
+        // Función para mostrar los resultados
+        function mostrarResultados(respuestas) {
+            const resultadosContainer = document.getElementById('resultadosContainer');
+            const respuestasList = document.getElementById('respuestasList');
+            const nombreEmpresaSpan = document.getElementById('nombreEmpresa');
+            const totalEncuestas = document.getElementById('totalEncuestas');
+            const puntajePromedio = document.getElementById('puntajePromedio');
+            const nivelRiesgo = document.getElementById('nivelRiesgo');
+            const fechaActualizacion = document.getElementById('fechaActualizacion');
+
+            if (!respuestas || respuestas.length === 0) {
+                respuestasList.innerHTML = `
+                    <div class="alert alert-info">
+                        No se encontraron respuestas para esta empresa
+                    </div>
+                `;
+                resultadosContainer.classList.remove('d-none');
+                return;
+            }
+
+            // Datos generales de la empresa
+            nombreEmpresaSpan.textContent = respuestas[0].empresaId?.nombreEmpresa || 'Empresa desconocida';
+            totalEncuestas.textContent = respuestas.length;
+            
+            // Calcular puntaje promedio
+            const sumaPuntajes = respuestas.reduce((sum, res) => sum + (res.puntajeTotal || 0), 0);
+            const promedio = Math.round(sumaPuntajes / respuestas.length);
+            puntajePromedio.textContent = promedio;
+            
+            // Determinar el nivel de riesgo más frecuente
+            const niveles = respuestas.map(r => r.nivelRiesgo).filter(Boolean);
+            const nivelMasFrecuente = niveles.length > 0 
+                ? niveles.sort((a,b) => 
+                    niveles.filter(v => v === a).length - 
+                    niveles.filter(v => v === b).length
+                ).pop() 
+                : 'Nulo';
+            
+            // Mostrar necesidad de acción
+            mostrarAccionRiesgo(nivelMasFrecuente);
+            
+            // Actualizar badge según nivel de riesgo
+            let badgeClass = 'bg-secondary';
+            if (nivelMasFrecuente === 'Alto' || nivelMasFrecuente === 'Muy alto') badgeClass = 'bg-danger';
+            else if (nivelMasFrecuente === 'Medio') badgeClass = 'bg-warning text-dark';
+            else if (nivelMasFrecuente === 'Bajo') badgeClass = 'bg-success';
+            
+            nivelRiesgo.innerHTML = `<span class="badge ${badgeClass}">${nivelMasFrecuente}</span>`;
+            
+            // Fecha de actualización
+            const ultimaActualizacion = new Date(Math.max(...respuestas.map(r => new Date(r.updatedAt || r.createdAt))));
+            fechaActualizacion.textContent = ultimaActualizacion.toLocaleDateString() + ' ' + ultimaActualizacion.toLocaleTimeString();
+
+            // Generar el HTML de las respuestas
+            respuestasList.innerHTML = respuestas.map(respuesta => {
+                const fechaEncuesta = new Date(respuesta.createdAt).toLocaleDateString();
+                const accion = accionesRiesgo[respuesta.nivelRiesgo] || accionesRiesgo['Nulo'];
+                
+                return `
+                <div class="card card-respuesta mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-poll me-2 text-primary"></i>
+                            Encuesta realizada el ${fechaEncuesta}
+                        </h5>
+                        <div>
+                            <span class="badge ${getBadgeClass(respuesta.nivelRiesgo)}">
+                                ${respuesta.nivelRiesgo || 'Nulo'}
+                            </span>
+                            <span class="puntaje-display ms-2">
+                                <i class="fas fa-star text-warning"></i> ${respuesta.puntajeTotal || '0'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Puntajes por Categoría -->
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-layer-group me-2"></i>Puntajes por Categoría</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        ${renderizarPuntajes(respuesta.puntajesPorCategoria, true)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Puntajes por Dominio -->
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0"><i class="fas fa-sitemap me-2"></i>Puntajes por Dominio</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        ${renderizarPuntajes(respuesta.puntajesPorDominio, false)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Necesidad de acción para esta encuesta -->
+                        <div class="accion-riesgo ${accion.clase} p-3 rounded mt-3">
+                            <h6 class="fw-bold mb-3">Necesidad de acción: ${respuesta.nivelRiesgo || 'Nulo'}</h6>
+                            <p class="mb-0">${accion.descripcion}</p>
+                        </div>
+                        
+                        <!-- Preguntas y respuestas -->
+                        <div class="mt-3">
+                            <h6 class="mb-3"><i class="fas fa-question-circle me-2"></i>Detalle de respuestas</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <tbody>
+                                        ${Object.entries(respuesta.preguntas || {}).map(([pregunta, respuestaPregunta]) => `
+                                            <tr>
+                                                <td class="fw-bold" style="width: 70%">${pregunta}</td>
+                                                <td class="text-end">${respuestaPregunta || 'Sin respuesta'}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            resultadosContainer.classList.remove('d-none');
+        }
+
+        // Función auxiliar para determinar el color del badge
+        function getBadgeClass(nivel) {
+            if (!nivel) return 'bg-secondary';
+            nivel = nivel.toLowerCase();
+            if (nivel.includes('muy alto') || nivel.includes('alto')) return 'bg-danger';
+            if (nivel.includes('medio')) return 'bg-warning text-dark';
+            if (nivel.includes('bajo')) return 'bg-success';
+            return 'bg-secondary';
+        }
+
+        // Función para renderizar los puntajes con barras de progreso
+        function renderizarPuntajes(puntajes, esCategoria) {
+            if (!puntajes) return '<p class="text-muted">No hay datos disponibles</p>';
+            
+            // Determinar el máximo valor para escalar las barras
+            const maxValue = esCategoria ? 50 : 20; // Ajusta según tus necesidades
+            
+            return Object.entries(puntajes).map(([nombre, valor]) => {
+                const porcentaje = Math.min(100, (valor / maxValue) * 100);
+                let barColor = 'bg-success';
+                
+                if (porcentaje > 70) barColor = 'bg-danger';
+                else if (porcentaje > 40) barColor = 'bg-warning';
+                
+                return `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small">${nombre}</span>
+                        <span class="small fw-bold">${valor}</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar ${barColor}" 
+                             role="progressbar" 
+                             style="width: ${porcentaje}%" 
+                             aria-valuenow="${valor}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="${maxValue}">
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Código para cargar empresas y manejar eventos
+        document.addEventListener('DOMContentLoaded', async () => {
+            const empresaSelect = document.getElementById('empresaSelect');
+            const loadingDiv = document.getElementById('loading');
+            
+            // 1. Cargar empresas
+            try {
+                loadingDiv.style.display = 'block';
+                const response = await fetch('http://localhost:3000/api/empresas');
+                
+                if (!response.ok) throw new Error('Error al cargar empresas');
+                
+                const { data: empresas } = await response.json();
+                
+                // Limpiar y poblar select
+                empresaSelect.innerHTML = '<option value="" disabled selected>Seleccione empresa</option>';
+                
+                empresas.forEach(empresa => {
+                    const option = document.createElement('option');
+                    option.value = empresa._id;
+                    option.textContent = `${empresa.nombreEmpresa} (${empresa.cantidadEmpleados} empleados)`;
+                    empresaSelect.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                empresaSelect.innerHTML = '<option value="" disabled>Error al cargar empresas</option>';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+
+            // 2. Manejar selección de empresa
+            empresaSelect.addEventListener('change', async () => {
+                const empresaId = empresaSelect.value;
+                if (!empresaId) return;
+
+                try {
+                    loadingDiv.style.display = 'block';
+                    const response = await fetch(`http://localhost:3000/api/respuestas/empresa/${empresaId}`);
+                    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Error al cargar respuestas');
+                    }
+                    
+                    const { data: respuestas } = await response.json();
+                    
+                    // Mostrar resultados
+                    mostrarResultados(respuestas);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message);
+                } finally {
+                    loadingDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

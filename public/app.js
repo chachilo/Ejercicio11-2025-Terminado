@@ -1,61 +1,131 @@
-document.getElementById('cuestionarioForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
+ 
+ /*
+ document.addEventListener('DOMContentLoaded', function() {
+  // Mostrar/ocultar preguntas condicionales al cambiar selección
+  document.getElementById('servicioClientes').addEventListener('change', function() {
+    document.getElementById('preguntasClientes').style.display = 
+      this.value === 'Sí' ? 'block' : 'none';
+  });
 
-  // Obtén el empresaId desde el campo oculto o localStorage
-  const empresaId = document.getElementById('empresaId').value || localStorage.getItem('empresaId');
+  document.getElementById('esJefe').addEventListener('change', function() {
+    document.getElementById('preguntasJefe').style.display = 
+      this.value === 'Sí' ? 'block' : 'none';
+  });
 
-  if (!empresaId) {
-    alert('No se encontró el identificador de la empresa. Por favor, regístrese primero.');
-    return;
+  // Función para mostrar mensaje de éxito
+  function mostrarMensajeExito(mensaje) {
+    const modalTitulo = document.getElementById('modalTitulo');
+    const modalMensaje = document.getElementById('modalMensaje');
+    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+
+    modalTitulo.textContent = 'Éxito';
+    modalTitulo.className = 'modal-title text-success';
+    modalMensaje.textContent = mensaje;
+    mensajeModal.show();
   }
 
-  // Captura las respuestas del formulario
-  const respuestas = {
-    preguntas: {}, // Aquí se almacenarán las respuestas de las preguntas
-    servicioClientes: document.getElementById('servicioClientes').value,
-    esJefe: document.getElementById('esJefe').value,
-    empresaId: empresaId, // Incluye el ID de la empresa
-  };
+  // Función para mostrar mensaje de error
+  function mostrarMensajeError(mensaje) {
+    const modalTitulo = document.getElementById('modalTitulo');
+    const modalMensaje = document.getElementById('modalMensaje');
+    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
 
-  // Recorre todas las preguntas y captura sus valores
-  for (let i = 1; i <= 72; i++) {
-    const pregunta = document.querySelector(`select[name="pregunta${i}"]`);
-    if (pregunta && pregunta.value) {
-      respuestas.preguntas[`pregunta${i}`] = pregunta.value;
+    modalTitulo.textContent = 'Error';
+    modalTitulo.className = 'modal-title text-danger';
+    modalMensaje.textContent = mensaje;
+    mensajeModal.show();
+  }
+
+  // Manejo del envío del formulario
+  document.getElementById('cuestionarioForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    // Obtén el empresaId desde el campo oculto o localStorage
+    const empresaId = document.getElementById('empresaId').value || localStorage.getItem('empresaId');
+
+    if (!empresaId) {
+      mostrarMensajeError('No se encontró el identificador de la empresa. Por favor, regístrese primero.');
+      return;
     }
-  }
 
-  // Envía los datos al backend
-  try {
-    const response = await fetch('http://localhost:3000/api/respuestas', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(respuestas),
-    });
+    // Convertir valores de Sí/No a booleanos
+    const servicioClientes = document.getElementById('servicioClientes').value === 'Sí';
+    const esJefe = document.getElementById('esJefe').value === 'Sí';
 
-    if (response.ok) {
-      const data = await response.json();
-      alert('Respuestas enviadas correctamente.');
-      console.log('Respuesta del servidor:', data);
-    } else {
-      alert('Error al enviar las respuestas.');
+    // Validar que se haya seleccionado Sí/No en ambas preguntas condicionales
+    if (document.getElementById('servicioClientes').value === '' || 
+        document.getElementById('esJefe').value === '') {
+      mostrarMensajeError('Por favor responda ambas preguntas sobre su rol (atención a clientes y si es jefe)');
+      return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar las respuestas.');
-  }
-});
 
-// Función para obtener las acciones recomendadas según el nivel de riesgo
-function obtenerAccionesRecomendadas(nivelRiesgo) {
-    const acciones = {
-        "Muy alto": "Se requiere realizar el análisis de cada categoría y dominio para establecer las acciones de intervención apropiadas...",
-        "Alto": "Se requiere realizar un análisis de cada categoría y dominio...",
-        "Medio": "Se requiere revisar la política de prevención de riesgos psicosociales...",
-        "Bajo": "Es necesario una mayor difusión de la política de prevención de riesgos psicosociales...",
-        "Nulo": "El riesgo resulta despreciable por lo que no se requiere medidas adicionales."
+    // Captura las respuestas del formulario
+    const formData = {
+      preguntas: {},
+      servicioClientes: servicioClientes,
+      esJefe: esJefe,
+      empresaId: empresaId
     };
-    return acciones[nivelRiesgo];
-}
+
+    // Recolectar todas las preguntas (1-64 obligatorias, 65-72 condicionales)
+    for (let i = 1; i <= 72; i++) {
+      const pregunta = document.querySelector(`select[name="pregunta${i}"]`);
+      
+      if (pregunta) {
+        // Para preguntas 1-64 (obligatorias)
+        if (i <= 64) {
+          if (!pregunta.value) {
+            mostrarMensajeError(`Por favor responda la pregunta ${i}`);
+            return;
+          }
+          formData.preguntas[`pregunta${i}`] = pregunta.value;
+        } 
+        // Para preguntas 65-68 (atención a clientes)
+        else if (i >= 65 && i <= 68) {
+          if (servicioClientes && !pregunta.value) {
+            mostrarMensajeError(`Por favor responda la pregunta ${i} (requerida para atención a clientes)`);
+            return;
+          }
+          if (servicioClientes) {
+            formData.preguntas[`pregunta${i}`] = pregunta.value;
+          }
+        } 
+        // Para preguntas 69-72 (jefes)
+        else if (i >= 69 && i <= 72) {
+          if (esJefe && !pregunta.value) {
+            mostrarMensajeError(`Por favor responda la pregunta ${i} (requerida para jefes)`);
+            return;
+          }
+          if (esJefe) {
+            formData.preguntas[`pregunta${i}`] = pregunta.value;
+          }
+        }
+      }
+    }
+
+    // Envía los datos al backend
+    try {
+      const response = await fetch('http://localhost:3000/api/respuestas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        mostrarMensajeExito('Respuestas enviadas correctamente. Será redirigido a los resultados.');
+        // Redirigir a la página de resultados después de 2 segundos
+        setTimeout(() => {
+          window.location.href = 'resultados.html';
+        }, 2000);
+      } else {
+        const errorData = await response.json();
+        mostrarMensajeError(`Error al enviar las respuestas: ${errorData.error || 'Error desconocido'}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      mostrarMensajeError('Hubo un error al enviar las respuestas. Por favor, intente nuevamente.');
+    }
+  });
+  }); */

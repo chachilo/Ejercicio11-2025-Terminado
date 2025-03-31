@@ -22,19 +22,3 @@
 
 
 
-  /* CSS para la ventana de Resultados */
-  #resultados {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  #resultados h2 {
-    margin-bottom: 15px;
-  }
-  
-  #resultados p {
-    margin: 10px 0;
-  }
