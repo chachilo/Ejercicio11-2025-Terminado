@@ -112,29 +112,30 @@ La aplicación web NOM-035 está diseñada para ayudar a las organizaciones a cu
 ## Estructura del Proyecto
 
 ```
-/nom-035-app
-│
-├── /backend
-│   ├── /api
-│   │   └── /cuestionario
-│   │       └── respuesta.js
-│   ├── /config
-│   │   └── db.js
-│   ├── /models
-│   │   └── respuesta.js
-│   ├── server.js
-│   └── package.json
-│
-├── /frontend
-│   ├── /public
-│   │   ├── /assets
-│   │   ├── index.html
-│   │   └── styles.css
-│   │   └── app.js
-│   ├── /src
-│   └── package.json
-│
-└── README.md
+📦 proyecto
+├── 📂 node_modules
+├── 📂 public
+│   ├── 📂 JS
+│   │   ├── 📄 app.js
+│   │   ├── 📄 empresa.js
+│   │   └── 📄 resultados.js
+│   ├── 📄 formulario.html
+│   ├── 📄 index.html
+│   ├── 📄 resultados.html
+│   └── 📄 styles.css
+├── 📂 src
+│   ├── 📂 controllers
+│   │   ├── 📄 empresaController.js
+│   │   └── 📄 respuestaController.js
+│   ├── 📂 models
+│   │   ├── 📄 empresa.js
+│   │   └── 📄 respuesta.js
+│   └── 📂 routes
+│       ├── 📄 empresaRoutes.js
+│       └── 📄 respuestaRoutes.js
+├── 📄 .gitignore
+├── 📄 package.json
+└── 📄 server.j
 ```
 
 ---
