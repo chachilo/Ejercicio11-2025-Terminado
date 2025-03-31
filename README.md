@@ -87,9 +87,14 @@ La aplicación web NOM-035 está diseñada para ayudar a las organizaciones a cu
    ```js
    mongoose.connect('mongodb://localhost:27017', {});
    ```
+5. inicia terminal:
+   - abrir la carpeta de src:
+    ```bash
+   cd src
+    ```
 5. Inicia el servidor backend:
    ```bash
-   node app.js
+   node server.js
    ```
 6. Usa Live Server en Visual Studio Code, abre `index.html` y haz clic en **"Open with Live Server"**.
 
